@@ -8,7 +8,7 @@ import LoginPanel from './loginPanel';
 
 
 //The Utils will have functions that will be re-used aroound the whole app
-import {getOrientation, setOrientationListener, removeOrientationListener} from '../../Utils/misc';
+import {getOrientation, setOrientationListener, removeOrientationListener, getPlatform} from '../../Utils/misc';
 
 
 class LoginComp extends Component{
@@ -20,7 +20,8 @@ class LoginComp extends Component{
       //set the 'orientation' state to 500 as this the landscape dimentions
       orientation:getOrientation(500),
       //create a boolean state that will check if the logo aniamtion is finished
-      isLogoAnimationDone:false
+      isLogoAnimationDone:false,
+      platform:getPlatform()
     }
 
     //set the 'changeOrientation' to the function 'setOrientationListener' to listen for change in the orientation
@@ -67,6 +68,8 @@ class LoginComp extends Component{
                 show = {this.state.isLogoAnimationDone}
                 //set prop orientation of the LoginPanel cmponeent to the state orientation
                 orientation={this.state.orientation}
+                //pass the platform as the prop that has the OS type of the device
+                platform={this.state.platform}
 
             />
 

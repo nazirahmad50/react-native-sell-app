@@ -88,7 +88,10 @@ class LoginPanel extends Component{
                         })
                     }}
                     >
-                    <LoginForm/>
+                    <LoginForm
+                        //Now pass the props 'platform' from LoginComp component to LoginForm component
+                        platform={this.props.platform}
+                    />
                     
                 </Animated.View>
             </View>

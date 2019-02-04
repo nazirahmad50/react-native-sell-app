@@ -1,4 +1,4 @@
-import {Dimensions} from 'react-native';
+import {Dimensions, Platform} from 'react-native';
 
 
 //export function 'getOrientation' in order ot be access by other componenet
@@ -18,4 +18,13 @@ export const setOrientationListener = (cb)=>{
 //this function will remove the Dimention event listener that has the id 'change'
 export const removeOrientationListener = ()=>{
     return Dimensions.removeEventListener('change')
+}
+
+//Check the OS of a device
+export const getPlatform = ()=>{
+    if (Platform.OS === 'android'){
+        return 'android'
+    }else{
+        return 'ios'
+    }
 }
