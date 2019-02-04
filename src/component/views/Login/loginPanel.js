@@ -3,6 +3,7 @@ import React, {Component} from 'react';
 import {StyleSheet, Text, View, Animated, Image} from 'react-native';
 
 import AppLogo from '../../../assets/images/loginPanel.jpg';
+import LoginForm from './loginForm';
 
 class LoginPanel extends Component{
     //Anytime there is data that is going to change within a component, state can be used.
@@ -62,7 +63,11 @@ class LoginPanel extends Component{
                     >
 
                     <Image
-                        style={styles.appLogoStyle}
+                        style={
+                            this.props.orientation === 'portrait'
+                            ? styles.appLogoPortrait
+                            : styles.appLogoLandscape
+                        }
                         //set the imported logo iamge as the source
                         source={AppLogo}
                         resizeMode={'contain'}
@@ -83,15 +88,7 @@ class LoginPanel extends Component{
                         })
                     }}
                     >
-                    <Text >FORM</Text>
-                    <Text >FORM</Text>
-                    <Text >FORM</Text>
-                    <Text >FORM</Text>
-                    <Text >FORM</Text>
-                    <Text >FORM</Text>
-                    <Text >FORM</Text>
-
-
+                    <LoginForm/>
                     
                 </Animated.View>
             </View>
@@ -100,9 +97,13 @@ class LoginPanel extends Component{
 }
 
 const styles = StyleSheet.create({
-    appLogoStyle:{
+    appLogoPortrait:{
         width:270,
         height:150
+    },
+    appLogoLandscape:{
+        width:270,
+        height:0
     }
   
   
