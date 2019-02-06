@@ -1,5 +1,5 @@
 //This will be a boolean function that checks for validation of text Inputs
-const validation = (value, rules)=>{
+const validation = (value, rules, form)=>{
     //set valid to true as default
     let valid = true;
 
@@ -18,6 +18,19 @@ const validation = (value, rules)=>{
                 //then set the valid boolean value as true
                 //if the func 'validateEmail' returns false then the 'valid' variable will be set to false
                 valid = valid && validateEmail(value)
+                break;
+            case 'minLenght':
+                //if valid is true and the function 'validateMinLenght()' returns true
+                //then set the 'valid' variable value as true
+                //if the func 'validateMinLenght' returns false then the 'valid' variable will be set to false
+                //The second parameter 'rules[rule]' will pass the value of the rule 'minLenght' which is 6
+                valid = valid && validateMinLenght(value, rules[rule])
+                break;
+
+            case 'confirmPass':
+                //For teh seocnd paramter i used the form to get the value of the password object
+                //through the value of the 'conmfirmPass' rule
+                valid = valid && validateConfirmPass(value, form[rules.confirmPass].value);
                 break;
             //as default return valid as true
             default:
@@ -48,6 +61,22 @@ const validateEmail = (email) =>{
     //email parameter value will be checked against the vairable 'expression'
     return expression.test(String(email).toLowerCase());
 }   
+
+const validateMinLenght = (value, ruleValue) =>{
+    //if the value of the confirm password text input is more than or equal to ruleValue'
+    if (value.length >= ruleValue){
+        return true
+    }
+    return false;
+    
+}   
+
+const validateConfirmPass = (value, pass) =>{
+    //return true if value of confirmPassword text input is equal to the value of Password text input
+    return value === pass;
+    
+}   
+
 
 
 export default validation;

@@ -1,6 +1,12 @@
 import {Dimensions, Platform} from 'react-native';
 
 
+export const FIREBASEURL = `YOUR_PROJECT_URL`
+export const APIKEY = `AIzaSyDjyjhXzayK1ItCHXSv95bQAiBJkoI65Es`
+export const SIGNUP = `https://www.googleapis.com/identitytoolkit/v3/relyingparty/signupNewUser?key=${APIKEY}`
+export const SIGNIN= `https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPassword?key=${APIKEY}`
+
+
 //export function 'getOrientation' in order ot be access by other componenet
 export const getOrientation = (value =>{
     //if the height of the window of the device is more than the value parameter then return portrait

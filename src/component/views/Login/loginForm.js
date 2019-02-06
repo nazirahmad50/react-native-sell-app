@@ -5,6 +5,13 @@ import {StyleSheet, Text, View, Button} from 'react-native';
 //The LoginInput is a re-usable component
 import LoginInput from '../../Utils/forms/loginInputs';
 import ValidationRules from '../../Utils/forms/validationRules';
+import LoadTabs from '../Tabs';
+
+import {connect} from 'react-redux';
+//import the actions from the store
+import {signUp, signIn} from '../../Store/actions/user_actions';
+import {bindActionCreators} from 'redux';
+
 
 
 class LoginForm extends Component{
@@ -73,8 +80,10 @@ class LoginForm extends Component{
         let rulesCopy = formCopy[name].rules
         //set the variable 'valid' to the imported function 'ValidationRules()'
         //Also pass the value of the text input and that text input rules to the 'ValidationRules()' 
-        let valid = ValidationRules(value, rulesCopy)
+        let valid = ValidationRules(value, rulesCopy, formCopy)
         
+        //pass the parameter name into the formCopy to return that 'name' value objects
+        //then set the 'isValid key of that name object to the variable valid
         formCopy[name].isValid = valid;
 
         //change the state of the form obejct to the variable formCopy
@@ -95,7 +104,7 @@ class LoginForm extends Component{
             mainBtnTitle: formType === 'Login' ? 'Register' : 'Login',
             //If the 'formType' is Login then change the 'resgiterBtnTitle' from Login to 'Not Registered Login'
             //else if its Register formType then change the 'resgiterBtnTitle' to Register
-            resgiterBtnTitle: formType === 'Login' ? 'Not Registered Login' : 'Register',
+            resgiterBtnTitle: formType === 'Login' ? 'Already Registered, Login' : 'Register',
 
         })
 
@@ -114,11 +123,87 @@ class LoginForm extends Component{
                 value={this.state.form.confirmPassword.value}
                 //the value is wha the user types into input text
                 //will pass id (password) to the updateInfo function and the value
-                onChangeText={value => () => this.updateInfo('confirmPassword', value)}
-                secureTextEntry
+                onChangeText={value => this.updateInfo('confirmPassword', value)}
+                secureTextEntry={true}
             />
         //otherwise return null
         :null
+    )
+
+    submitUser = ()=>{
+        let isFormVlaid = true;
+        let formToSubmit = {};
+        //make a compy of the form obejct
+        const formCopy = this.state.form;
+
+        //itterate thorugh the form obejct keys
+        for (let key in formCopy){
+            //if the form type is Login
+            if (this.state.formType === 'Login'){
+                //Skip the 'confimPassword' input
+                if (key !== 'confirmPassword'){
+                    //if 'isFormvalid' is equal to true
+                    //and that key in the form has a true 'isValid' value 
+                    isFormVlaid = isFormVlaid && formCopy[key].isValid;
+                    //formToSubmit will have the key such as email and that will have 
+                    //the value of its key
+                    //for e.g. email:value
+                    formToSubmit[key] = formCopy[key].value
+                }
+
+            }else{
+                 //if 'isFormvalid' is equal to true
+                    //and that key in the form has a true 'isValid' value 
+                    isFormVlaid = isFormVlaid && formCopy[key].isValid;
+                    //formToSubmit will have the key such as email and that will have 
+                    //the value of its key
+                    //for e.g. email:value
+                    formToSubmit[key] = formCopy[key].value
+
+            }
+        }
+        //if 'isFormVlaid' equal to true
+        if (isFormVlaid){
+            if (this.state.formType === 'Login'){
+                //call the props 'signIn' and pass the 'formToSubmit',
+                //which holds the key and its value
+                //for e.g. email:value
+                //catch the reponse (then) 
+                this.props.signIn(formToSubmit).then(()=>{
+                    console.log(this.props.User)
+
+                })
+            //else if the form type is of 'Register'      
+            }else{
+                 //call the props 'signUp' and pass the 'formToSubmit',
+                //which holds the key and its value
+                //for e.g. confirmPassword:value
+                //catch the reponse (then) 
+                this.props.signUp(formToSubmit).then(()=>{
+                    console.log(this.props.User)
+                })
+
+            }
+            
+
+        //else show errors by setting hasErrors to true
+        }else{
+            this.setState({
+                hasErrors:true
+            })
+        }
+
+
+    }
+
+    formHasErrors = ()=>(
+        //if the state hasErrors is eal to true the nreturn a simple Text
+        this.state.hasErrors ?
+            <View style={styles.errorContainer}>
+                <Text style={styles.errorLabel}>Opps, Check your Info</Text>
+            </View>
+            //else retun null
+            :null
     )
 
     render(){
@@ -141,12 +226,13 @@ class LoginForm extends Component{
                     value={this.state.form.password.value}
                     //the value is wha the user types into input text
                     //will pass id (password) to the updateInfo function and the value
-                    onChangeText={value => ()=>this.updateInfo('password',value)}
-                    secureTextEntry
+                    onChangeText={value =>this.updateInfo('password',value)}
+                    secureTextEntry={true}
                 />
 
                 {/*Call 'showConfirmPasswordInput' func before top button (1st Btn) */}
                 {this.showConfirmPasswordInput()}
+                {this.formHasErrors()}
 
                 {/*i cant style the button so have to style the View*/}
                 <View style={
@@ -159,7 +245,7 @@ class LoginForm extends Component{
                     <Button
                         title={this.state.mainBtnTitle}
                         color='#fd9727'
-                        onPress={this.changeBtnType}
+                        onPress={this.submitUser}
                     />
                 </View>
 
@@ -183,7 +269,7 @@ class LoginForm extends Component{
                     <Button
                         title="I'll Register Later"
                         color='lightgrey'
-                        onPress={()=> alert('later')}
+                        onPress={()=> LoadTabs()}
                     />
                 </View>
 
@@ -203,8 +289,30 @@ const styles = StyleSheet.create({
     },
     buttonIos:{
         marginBottom:10
+    },
+    errorContainer:{
+        marginBottom:20,
+        marginTop:10
+    },
+    errorLabel:{
+        color:'red',
+        fontFamily: 'Roboto-Black'
     }
   
   });
 
-export default LoginForm;
+  function mapStateToProps(state){
+      //return User reducer
+      return{
+          User:state.User
+      }
+
+  }
+
+  function mapDispatchToProps(dispatch){
+      //pass the actions and parameter dispatch to bindActionCreators function
+      return bindActionCreators({signUp, signIn},dispatch)
+  }
+//connect() API is used for creating container elements that are connected to the Redux store
+//it requires both 'mapStateToProps' and 'mapDispatchToProps' and an option which is the componenet
+export default connect(mapStateToProps,mapDispatchToProps)(LoginForm);
