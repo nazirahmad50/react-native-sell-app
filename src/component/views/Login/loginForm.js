@@ -12,6 +12,8 @@ import {connect} from 'react-redux';
 import {signUp, signIn} from '../../Store/actions/user_actions';
 import {bindActionCreators} from 'redux';
 
+import {setTokens} from '../../Utils/misc';
+
 
 
 class LoginForm extends Component{
@@ -170,7 +172,8 @@ class LoginForm extends Component{
                 //for e.g. email:value
                 //catch the reponse (then) 
                 this.props.signIn(formToSubmit).then(()=>{
-                    console.log(this.props.User)
+                    //call the function 'manageAccess' to store the tokens
+                    this.manageAccess();
 
                 })
             //else if the form type is of 'Register'      
@@ -180,7 +183,8 @@ class LoginForm extends Component{
                 //for e.g. confirmPassword:value
                 //catch the reponse (then) 
                 this.props.signUp(formToSubmit).then(()=>{
-                    console.log(this.props.User)
+                    //call the function 'manageAccess' to store the tokens
+                    this.manageAccess();
                 })
 
             }
@@ -205,6 +209,26 @@ class LoginForm extends Component{
             //else retun null
             :null
     )
+
+    manageAccess = ()=>{
+        //If the uid in the props 'userData' fails then set state 'hasErrors' to true to show error
+        if (!this.props.User.userData.uid){
+            this.setState({hasErrors:true})
+
+        }else{
+            //pass the 'userData' props which has the tokenId, uid and localId of firebase user
+            //second parameter will pass a function that controls what happens after the tokens are set
+            setTokens(this.props.User.userData, ()=>{
+                //set the errors to false and go to the 'LoadTabs' componeent
+                this.setState({hasErrors:false})
+                LoadTabs();
+
+
+            })
+        }
+    }
+
+  
 
     render(){
         return(
