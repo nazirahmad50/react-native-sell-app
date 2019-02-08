@@ -325,14 +325,18 @@ const styles = StyleSheet.create({
   
   });
 
+  //The satte has the User object
+//for e.g. User:userData:refToken
   function mapStateToProps(state){
       //return User reducer
       return{
+            //set the state 'User' to the key User and return it as props you can tell from the name of the function
           User:state.User
       }
 
   }
 
+  //maps disptahc to a props
   function mapDispatchToProps(dispatch){
       //pass the actions and parameter dispatch to bindActionCreators function
       return bindActionCreators({signUp, signIn},dispatch)

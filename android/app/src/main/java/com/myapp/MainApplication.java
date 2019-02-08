@@ -18,10 +18,10 @@ import java.util.List;
 
 public class MainApplication extends NavigationApplication {
 
-      @Override
-    protected ReactGateway createReactGateway() {
+  @Override
+   protected ReactGateway createReactGateway() {
         ReactNativeHost host = new NavigationReactNativeHost(this, isDebug(), createAdditionalReactPackages()) {
-            @Override
+           @Override
             protected String getJSMainModuleName() {
                 return "index";
             }
@@ -35,10 +35,9 @@ public class MainApplication extends NavigationApplication {
     }
 
     protected List<ReactPackage> getPackages() {
-        // Add additional packages you require here
-        // No need to add RnnPackage and MainReactPackage
+    
         return Arrays.<ReactPackage>asList(
-            // eg. new VectorIconsPackage()
+            new VectorIconsPackage()
         );
     }
   
@@ -48,34 +47,4 @@ public class MainApplication extends NavigationApplication {
     }
 
 
-  private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
-    @Override
-    public boolean getUseDeveloperSupport() {
-      return BuildConfig.DEBUG;
-    }
-
-    @Override
-    protected List<ReactPackage> getPackages() {
-      return Arrays.<ReactPackage>asList(
-          new MainReactPackage(),
-            new VectorIconsPackage()
-      );
-    }
-
-    @Override
-    protected String getJSMainModuleName() {
-      return "index";
-    }
-  };
-
-  @Override
-  public ReactNativeHost getReactNativeHost() {
-    return mReactNativeHost;
-  }
-
-  @Override
-  public void onCreate() {
-    super.onCreate();
-    SoLoader.init(this, /* native exopackage */ false);
-  }
 }

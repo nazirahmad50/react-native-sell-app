@@ -90,6 +90,7 @@ class LoginComp extends Component{
     
     })
   }
+  
 
   render() {
     //If the state 'loading' is true then show the activity indicator else show the login screen

@@ -11,6 +11,8 @@ import LoginComp from './src/component/views/Login';
 import HomeComp from './src/component/views/Home';
 import AddPostComp from './src/component/views/Admin/AddPost';
 import SideDrawerComp from './src/component/views/SideDrawer';
+import UserPosts from './src/component/views/UserPosts';
+
 
 //store the 'ConfigureStore' componeent in the variable 'store'
 const store = ConfigureStore();
@@ -48,6 +50,14 @@ Navigation.registerComponentWithRedux(
   'SideDrawerScreen', 
   () => 
   SideDrawerComp,
+  Provider,
+  store
+);
+
+Navigation.registerComponentWithRedux(
+  'sellitApp.UserPosts', 
+  () => 
+  UserPosts,
   Provider,
   store
 );
