@@ -8,6 +8,7 @@ import {connect} from 'react-redux';
 
 
 class SideDrawerComp extends React.Component{
+    
 
     state = {
         //buttons state has an array of objects

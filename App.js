@@ -12,6 +12,8 @@ import HomeComp from './src/component/views/Home';
 import AddPostComp from './src/component/views/Admin/AddPost';
 import SideDrawerComp from './src/component/views/SideDrawer';
 import UserPosts from './src/component/views/UserPosts';
+import Article from './src/component/views/Articles';
+
 
 
 //store the 'ConfigureStore' componeent in the variable 'store'
@@ -58,6 +60,14 @@ Navigation.registerComponentWithRedux(
   'sellitApp.UserPosts', 
   () => 
   UserPosts,
+  Provider,
+  store
+);
+
+Navigation.registerComponentWithRedux(
+  'sellitApp.Article', 
+  () => 
+  Article,
   Provider,
   store
 );

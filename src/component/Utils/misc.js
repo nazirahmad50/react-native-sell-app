@@ -1,7 +1,7 @@
 import {Dimensions, Platform, AsyncStorage} from 'react-native';
 
 
-export const FIREBASEURL = `YOUR_PROJECT_URL`
+export const FIREBASEURL = `https://sellitapp-f6712.firebaseio.com/`
 export const APIKEY = `AIzaSyDjyjhXzayK1ItCHXSv95bQAiBJkoI65Es`
 export const SIGNUP = `https://www.googleapis.com/identitytoolkit/v3/relyingparty/signupNewUser?key=${APIKEY}`
 export const SIGNIN= `https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPassword?key=${APIKEY}`
@@ -71,3 +71,43 @@ export const getTokens = (CallBack)=>{
     })
   
 }
+
+export const gridTwoColumns = (list)=>{
+    let newArticles = [];
+    let articlesCopy = list;
+
+    let count = 1;
+    let vessel = {};
+
+    //if there is articles
+    if (articlesCopy){
+        //loop through all the articles
+        //'element' is each iteration(means each article) in the articlesCopy
+        articlesCopy.forEach(element =>{
+            
+            //if count equal to 1
+            if (count == 1){
+                //pass the 'element' to obejct 'blockOne' in the vessel
+                vessel['blockOne'] = element;
+                //increase count to 2
+                count++;
+            //else if count is equal to 2
+            }else{
+                 //pass the next 'element' to object 'blockTwo' in the vessel
+                vessel['blockTwo'] = element;
+                //push the vessel (blockOne,blockTwo) object to newArticles 
+                newArticles.push(vessel);
+                
+                //reset the count and the vessel as i am moving to the next iteration (row)
+                //Each block will have two 'elements'(articles)
+                count = 1;
+                vessel = {};
+            }
+
+        })
+    }
+
+    return newArticles;
+  
+}
+
