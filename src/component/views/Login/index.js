@@ -82,7 +82,9 @@ class LoginComp extends Component{
              //then pass the data of the action type called AUTO_SIGN_IN
              //and run a callback function which will load the tabs
               setTokens(this.props.User.userData,()=>{
-                  LoadTabs();
+                //When user has token they will be able to Auto Sign in
+                //also set the parameter of the LoadTabs to true this means that the user will have access to the Sell It tab
+                  LoadTabs(true);
               })
            }
          })

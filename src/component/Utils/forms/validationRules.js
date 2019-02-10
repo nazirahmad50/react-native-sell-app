@@ -26,6 +26,13 @@ const validation = (value, rules, form)=>{
                 //The second parameter 'rules[rule]' will pass the value of the rule 'minLenght' which is 6
                 valid = valid && validateMinLenght(value, rules[rule])
                 break;
+            case 'maxLenght':
+                //if valid is true and the function 'validateMinLenght()' returns true
+                //then set the 'valid' variable value as true
+                //if the func 'validateMinLenght' returns false then the 'valid' variable will be set to false
+                //The second parameter 'rules[rule]' will pass the value of the rule 'minLenght' which is 6
+                valid = valid && validateMaxLenght(value, rules[rule])
+                break;
 
             case 'confirmPass':
                 //For teh seocnd paramter i used the form to get the value of the password object
@@ -69,7 +76,15 @@ const validateMinLenght = (value, ruleValue) =>{
     }
     return false;
     
-}   
+}  
+
+const validateMaxLenght = (value, ruleValue) =>{
+    if (value.length <= ruleValue){
+        return true
+    }
+    return false;
+    
+} 
 
 const validateConfirmPass = (value, pass) =>{
     //return true if value of confirmPassword text input is equal to the value of Password text input

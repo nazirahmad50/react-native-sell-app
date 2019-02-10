@@ -221,7 +221,9 @@ class LoginForm extends Component{
             setTokens(this.props.User.userData, ()=>{
                 //set the errors to false and go to the 'LoadTabs' componeent
                 this.setState({hasErrors:false})
-                LoadTabs();
+                //When the tokens are set then the user will be able to login,
+                //thus the LoadTabs has parameter true so they have access to the Sell It tab
+                LoadTabs(true);
 
 
             })
@@ -293,7 +295,9 @@ class LoginForm extends Component{
                     <Button
                         title="I'll Register Later"
                         color='lightgrey'
-                        onPress={()=> LoadTabs()}
+                        //the parameter of the LoadTabs will be set to false becasue the user wont login, 
+                        //thus they wont have access to the Sell It tab
+                        onPress={()=> LoadTabs(false)}
                     />
                 </View>
 

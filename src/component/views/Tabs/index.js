@@ -7,8 +7,9 @@ import LeftBtn from '../../../assets/images/circle.png';
 import Icons from 'react-native-vector-icons/FontAwesome';
 
 
-
-const LoadTabs = () =>{
+//pass parameter allow which will be boolean either true or false
+//If the allow is true then show that screen(Sell It tab) and its false then show the componeent notAllow
+const LoadTabs = (allow) =>{
 
   //converts the icon into an actual image
   Promise.all([
@@ -73,7 +74,8 @@ const LoadTabs = () =>{
           stack: {
             children: [{
               component:{
-                name:'sellitApp.AddPost'
+                //if allow is true then show the AddPost compoenent and if not then show NotAllow componenet
+                name: allow ? 'sellitApp.AddPost' : 'sellitApp.NotAllow'
               }
             }],
             options: {

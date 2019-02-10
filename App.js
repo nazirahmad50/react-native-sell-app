@@ -9,7 +9,10 @@ import { Provider } from 'react-redux';
 //Import the componants
 import LoginComp from './src/component/views/Login';
 import HomeComp from './src/component/views/Home';
+
 import AddPostComp from './src/component/views/Admin/AddPost';
+import NotAllow from './src/component/views/Admin/AddPost/notAllowed';
+
 import SideDrawerComp from './src/component/views/SideDrawer';
 import UserPosts from './src/component/views/UserPosts';
 import Article from './src/component/views/Articles';
@@ -68,6 +71,14 @@ Navigation.registerComponentWithRedux(
   'sellitApp.Article', 
   () => 
   Article,
+  Provider,
+  store
+);
+
+Navigation.registerComponentWithRedux(
+  'sellitApp.NotAllow', 
+  () => 
+  NotAllow,
   Provider,
   store
 );
