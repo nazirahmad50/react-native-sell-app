@@ -1,4 +1,4 @@
-import {GET_ARTICLES} from '../types';
+import {GET_ARTICLES, ADD_ARTICLE} from '../types';
 
 import axios from 'axios';
 import { FIREBASEURL} from '../../Utils/misc';
@@ -32,6 +32,25 @@ export function getArticles(category){
     return{
         //This will go to a reducer called GET_ARTICLES
         type:GET_ARTICLES,
+        //payload will hold the request
+        payload:request
+    }
+}
+
+export function addArticle(data, token){
+   
+    const request = axios({
+        method:'POST',
+        url:`${FIREBASEURL}/articles.json?auth=${token}`,
+        data:data
+
+    }).then(response =>{
+        return response.data;
+    })
+
+    return{
+        //This will go to a reducer called GET_ARTICLES
+        type:ADD_ARTICLE,
         //payload will hold the request
         payload:request
     }
