@@ -1,5 +1,5 @@
 //import types that are used inthe action and will be used in the reducers
-import {REGISTER_USER, SIGN_USER, AUTO_SIGN_IN} from '../types';
+import {REGISTER_USER, SIGN_USER, AUTO_SIGN_IN, GET_USER_ARTICLES} from '../types';
 
 export default function (state={}, action){
     //switch case for the action type taht will be returned from the actions
@@ -52,6 +52,16 @@ export default function (state={}, action){
                     refToken:action.payload.refresh_token || false
                 }
             }
+        break;
+
+        case GET_USER_ARTICLES:
+        return{
+                  //Adds old state properties to the new object by copying all enumerable properties from the state to the '{}'
+            //This is called object spread syntax
+            ...state, userArticles:action.payload
+            
+        }
+        break;
         default:
             return state
 

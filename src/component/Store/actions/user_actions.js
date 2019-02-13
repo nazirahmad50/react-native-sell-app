@@ -1,7 +1,7 @@
-import {REGISTER_USER, SIGN_USER, AUTO_SIGN_IN} from '../types';
+import {REGISTER_USER, SIGN_USER, AUTO_SIGN_IN, GET_USER_ARTICLES} from '../types';
 
 import axios from 'axios';
-import {SIGNUP, SIGNIN, REFRESH, } from '../../Utils/misc';
+import {SIGNUP, SIGNIN, REFRESH, FIREBASEURL} from '../../Utils/misc';
 
 //the data parameter is going to for e.g. the user's email and password
 export function signUp(data){
@@ -98,6 +98,40 @@ export function autoSignIn(refToken){
     return {
         //This will go to a reducer called AUTO_SIGN_IN
         type:AUTO_SIGN_IN,
+        //payload will hold the request
+        payload:request
+    }
+
+
+}
+
+//the data parameter is going to be the refToken which will passed to the data
+export function getUserPosts(UID){
+    //variable request thats equal to Axios
+    const request = axios(
+        `${FIREBASEURL}/articles.json?orderBy=\"uid\"&equalTo=\"${UID}\"`,
+        //catch the reponse data and return it
+        ).then(response =>{
+            let articles = [];
+
+            //iterate thorugh response data
+            for (let key in response.data){
+                articles.push({
+                    ...response.data[key],
+                    //id of the post is going ot be the key
+                    id:key
+                })
+    
+            }
+            return articles;
+    //catch the error
+    }).catch(e=>{
+        return false
+    })
+
+    return {
+        //This will go to a reducer called AUTO_SIGN_IN
+        type:GET_USER_ARTICLES,
         //payload will hold the request
         payload:request
     }

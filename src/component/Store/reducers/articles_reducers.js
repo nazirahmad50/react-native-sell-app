@@ -1,4 +1,4 @@
-import {GET_ARTICLES, Add_ARTICLE} from '../types';
+import {GET_ARTICLES, Add_ARTICLE, RESET_ARTICLE} from '../types';
 
 export default function (state={}, action){
     //switch case for the action type that will be returned from the actions
@@ -6,6 +6,8 @@ export default function (state={}, action){
         case GET_ARTICLES:
             return{...state,list:action.payload}
         case Add_ARTICLE:
+            return { ...state, newArticle: action.payload }
+        case RESET_ARTICLE:
             return { ...state, newArticle: action.payload }
         default:
             return state

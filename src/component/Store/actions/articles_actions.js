@@ -1,4 +1,4 @@
-import {GET_ARTICLES, ADD_ARTICLE} from '../types';
+import {GET_ARTICLES, ADD_ARTICLE, RESET_ARTICLE} from '../types';
 
 import axios from 'axios';
 import { FIREBASEURL} from '../../Utils/misc';
@@ -53,5 +53,16 @@ export function addArticle(data, token){
         type:ADD_ARTICLE,
         //payload will hold the request
         payload:request
+    }
+}
+
+export function resetArticle(){
+   
+ 
+    return{
+        //This will go to a reducer called GET_ARTICLES
+        type:RESET_ARTICLE,
+        payload:""
+   
     }
 }

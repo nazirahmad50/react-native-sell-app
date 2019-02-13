@@ -12,7 +12,7 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {autoSignIn} from '../../../Store/actions/user_actions';
 
-import {addArticle} from '../../../Store/actions/articles_actions';
+import {addArticle, resetArticle} from '../../../Store/actions/articles_actions';
 
 //The Utils will have functions that will be re-used aroound the whole app
 import {getTokens, setTokens} from '../../../Utils/misc';
@@ -168,18 +168,21 @@ class AddPostComp extends Component{
 
           //if the expiration(current time) is greater than the value paramater which is the previous time of the token
           if (expiration > value[2][1]){
-            //after that pass the refresh token to the props function 'autoSignIn'
+            //after that pass the refresh token to the props function 'autoSignIn' and reset the values
             this.props.autoSignIn(value[1][1]).then(()=>{
               //pass the 'userData' which holds the token to the function 'setTokens'
               setTokens(this.props.User.userData, ()=>{
                 this.props.addArticle(form,this.props.User.userData.token).then(()=>{
-                  
+                  console.log(form)
                 })
               })
             })
-            
+          
+          //else if the tokens are not expired then post to firebase
           }else{
-            alert('post article')
+            this.props.addArticle(form,this.props.User.userData.token).then(()=>{
+              console.log(form)
+            })
           }
         })
 
@@ -235,6 +238,8 @@ class AddPostComp extends Component{
     //set state 'hasErrors' to false and empty 'errorsArray'
     //set 'isLoading' to false
     this.setState({hasErrors:false, errorsArray:[], isLoading:false})
+
+    this.props.resetArticle();
   }
 
 
@@ -442,7 +447,7 @@ function mapStateToProps(state){
 //maps disptahc to a props
 function mapDispatchToProps(dispatch){
   //pass the actions and parameter dispatch to bindActionCreators function
-  return bindActionCreators({addArticle, autoSignIn},dispatch)
+  return bindActionCreators({addArticle, autoSignIn, resetArticle},dispatch)
 }
 
 //connect() API is used for creating container elements that are connected to the Redux store
