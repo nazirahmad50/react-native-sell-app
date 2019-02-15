@@ -1,7 +1,7 @@
-import {REGISTER_USER, SIGN_USER, AUTO_SIGN_IN, GET_USER_ARTICLES} from '../types';
+import {REGISTER_USER, SIGN_USER, AUTO_SIGN_IN, GET_USER_ARTICLES, DELETE_USER_POST} from '../types';
 
 import axios from 'axios';
-import {SIGNUP, SIGNIN, REFRESH, FIREBASEURL} from '../../Utils/misc';
+import {SIGNUP, SIGNIN, REFRESH, FIREBASEURL, setTokens} from '../../Utils/misc';
 
 //the data parameter is going to for e.g. the user's email and password
 export function signUp(data){
@@ -134,6 +134,64 @@ export function getUserPosts(UID){
         type:GET_USER_ARTICLES,
         //payload will hold the request
         payload:request
+    }
+
+
+}
+
+export function deleteUserPost(postId, userData){
+ 
+        const promise = new Promise((resolve, reject)=>{
+            const URL = `${FIREBASEURL}/articles/${postId}.json`;
+
+            const request = axios({
+                method:'DELETE',
+                //pass the URL of the article to delete and pass authenticaion of the user token
+                url:`${URL}?auth=${userData.token}`
+            }).then(response =>{
+                //Whenever the request is completed then call the resolve which resolves the promise
+                //if the url or the token is incorrect then it will fail and promise wont get resolved
+                resolve({deletePost:true})
+
+            }).catch(e =>{
+                //if something goes wrong with the first axios request then generate new token and redo the axios proccess
+                //pass the refresh token from the parameter userData to the function 'autoSignIn'
+                //then it will try to get the new tokens
+                const signIn = autoSignIn(userData.refToken);
+
+                //after the payload gets resolved then get the response
+                signIn.payload.then( response =>{
+                    //create a variable and store the new tokens returned by the response
+                    let newToken= {
+                        uid:response.user_id,
+                        token: response.id_token,
+                        refToken: response.refresh_token
+                    }
+                    //save those new tokens on the device
+                    //then use the callback method
+                    //thorugh the user of the callBack method then make request again to firebase to delete the post
+                    setTokens(newToken, ()=>{
+                        axios({
+                            method:'DELETE',
+                            //pass the URL of the article to delete and pass authenticaion of the user token
+                            url:`${URL}?auth=${userData.token}`
+                        }).then(() =>{
+                            //Whenever the request is completed then call the resolve which resolves the promise
+                            //if the url or the token is incorrect then it will fail and promise wont get resolved
+                            resolve({deletePost:true, userData:newToken})
+            
+                        })
+                    })
+                })
+            })
+
+        })
+
+    return {
+        //This will go to a reducer called DELETE_USER_POST
+        type:DELETE_USER_POST,
+        //payload will hold the request
+        payload:promise
     }
 
 

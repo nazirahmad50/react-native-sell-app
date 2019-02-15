@@ -1,5 +1,5 @@
 //import types that are used inthe action and will be used in the reducers
-import {REGISTER_USER, SIGN_USER, AUTO_SIGN_IN, GET_USER_ARTICLES} from '../types';
+import {REGISTER_USER, SIGN_USER, AUTO_SIGN_IN, GET_USER_ARTICLES, DELETE_USER_POST} from '../types';
 
 export default function (state={}, action){
     //switch case for the action type taht will be returned from the actions
@@ -59,6 +59,16 @@ export default function (state={}, action){
                   //Adds old state properties to the new object by copying all enumerable properties from the state to the '{}'
             //This is called object spread syntax
             ...state, userArticles:action.payload
+            
+        }
+        break;
+
+        case DELETE_USER_POST:
+        return{
+                  //Adds old state properties to the new object by copying all enumerable properties from the state to the '{}'
+            //This is called object spread syntax
+            //the action.payload will eithr return true or false
+            ...state, ...action.payload
             
         }
         break;

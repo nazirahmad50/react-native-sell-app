@@ -2,6 +2,8 @@
 import React, {Component} from 'react';
 import {StyleSheet, Text, View, ScrollView, ActivityIndicator} from 'react-native';
 
+//import the reac native splash screen
+import SplashScreen from 'react-native-splash-screen'
 
 import TitleApp from './appTitle';
 import LoginPanel from './loginPanel';
@@ -91,6 +93,10 @@ class LoginComp extends Component{
       }
     
     })
+
+    //hide the splash screen on componenet mount
+    SplashScreen.hide();
+
   }
   
 

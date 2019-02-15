@@ -2,7 +2,7 @@ import React from 'react';
 import {StyleSheet, Text, View, ScrollView, TouchableOpacity, Modal} from 'react-native';
 
 import {connect} from 'react-redux';
-import {getUserPosts} from '../../Store/actions/user_actions';
+import {getUserPosts, deleteUserPost} from '../../Store/actions/user_actions';
 import {bindActionCreators} from 'redux'
 
 class UserPosts extends React.Component{  
@@ -21,6 +21,16 @@ class UserPosts extends React.Component{
 
   showConfirm = (ID)=>{
     this.setState({isModal:true, postToDeleteId:ID})
+  }
+
+  deletePost = (postId)=>{
+      //pass the id of the post to delete and the tokens to props 'deleteUserPost'
+      this.props.deleteUserPost(postId, this.props.User.userData).then(()=>{
+          const UID = this.props.User.userData.uid;
+          this.props.getUserPosts(UID).then(()=>{
+          this.setState({posts:this.props.User.userArticles, postToDeleteId:'', isModal:false})
+        })
+      })
   }
 
   showPosts=(posts)=>(
@@ -64,7 +74,7 @@ class UserPosts extends React.Component{
 
                 <View style={{marginTop:50}}>
 
-                    <TouchableOpacity onPress={()=>alert('delete')}>
+                    <TouchableOpacity onPress={()=>this.deletePost(this.state.postToDeleteId)}>
                         <Text style={styles.modalDelete}>Yes, Delete It</Text>
                     </TouchableOpacity>
 
@@ -120,7 +130,7 @@ function mapStateToProps(state){
   //maps disptahc to a props
 function mapDispatchToProps(dispatch){
   //pass the actions and parameter dispatch to bindActionCreators function
-  return bindActionCreators({getUserPosts},dispatch)
+  return bindActionCreators({getUserPosts, deleteUserPost},dispatch)
 }
 
 //connect() API is used for creating container elements that are connected to the Redux store
